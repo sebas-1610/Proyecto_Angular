@@ -18,6 +18,7 @@ export class TheaterService {
     return this.http.get<Theater>(`${environment.url_ms_cinema}/theaters/${id}`);
   }
   create(newTheater: Theater): Observable<Theater> {
+    delete newTheater.id;
     return this.http.post<Theater>(`${environment.url_ms_cinema}/theaters`, newTheater);
   }
   update(theTheater: Theater): Observable<Theater> {
