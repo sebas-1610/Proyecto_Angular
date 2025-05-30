@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { Subscription } from 'rxjs';
 import { SecurityService } from 'src/app/services/security.service';
+import { WebSocketService } from 'src/app/services/web-socket-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,8 @@ export class NavbarComponent implements OnInit {
   constructor(location: Location,
     private element: ElementRef,
     private router: Router,
-    private securityService: SecurityService) {
+    private securityService: SecurityService,
+  private webSocketService: WebSocketService) {
     this.location = location;
     this.subscription = this.securityService.getUser().subscribe(data => {
       this.user = data;
@@ -30,6 +32,11 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
+    this.webSocketService.setNameEvent("+573001112233")
+    this.webSocketService.callback.subscribe((data: any) => {
+      console.log("Mensaje recibido desde el WebSocket:", data);
+      // Aquí puedes manejar el mensaje recibido
+    });
   }
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
